@@ -5,7 +5,7 @@
         <div class="header-name">{{ pageName }}</div>
         <div class="nav-butttons">
           <div
-            v-if="history.length"
+            v-if="changeMode && history.length"
             class="nav-butttons__item"
             @click="cancelLastChange"
           >
@@ -164,7 +164,11 @@ export default class ContactPage extends Vue {
   cancelLastChange() {
     const change = this.history.pop();
     if (!change || !this.Contact) return;
-    if (change.index !== undefined && this.Contact.params) {
+    if (
+      change.index !== undefined &&
+      this.Contact.params &&
+      this.Contact.params[change.index]
+    ) {
       this.Contact.params[change.index] = {
         ...this.Contact.params[change.index],
         [change.field]: change.oldValue
@@ -194,7 +198,6 @@ export default class ContactPage extends Vue {
     index?: number
   ) {
     if (!this.Contact || !this.initialContact) return;
-    console.log(field, index);
     if (
       index !== undefined &&
       this.Contact.params &&
